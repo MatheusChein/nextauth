@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { parseCookies, setCookie } from 'nookies';
 import { signOut } from '../contexts/AuthContext';
+import { AuthTokenError } from './errors/AuthTokenError';
 
 let isRefreshing = false;
 let failedRequestQueue = [];
@@ -58,6 +59,8 @@ export function setupAPIClient(context = undefined) {
             // essa verificação é pq o método signOut usa o Router do next, que só funciona no browser
             if (process.browser) {
               signOut()
+            } else {
+              return Promise.reject(new AuthTokenError())
             }
           }).catch(err => {
             failedRequestQueue.forEach(request => {
@@ -86,6 +89,8 @@ export function setupAPIClient(context = undefined) {
       } else {
         if (process.browser) {
           signOut()
+        } else {
+          return Promise.reject(new AuthTokenError())
         }
       }
     }
