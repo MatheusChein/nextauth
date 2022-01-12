@@ -4,7 +4,7 @@ import { api } from "../services/apiClient";
 import Router, { useRouter } from 'next/router';
 
 
-type User = {
+export type User = {
   email: string;
   permissions: string[];
   roles: string[];
